@@ -117,116 +117,170 @@
 ;; the same continent and a year where the first country
 ;; has a higher population than the second country in that year?
 
-#;(for/list ([l (do/sequence ([(country1 year1 continent1 pop1)
-                             (in-data-frame gapminder
-                                            "country"
-                                            "year"
-                                            "continent"
-                                            "pop")]
-                            #:when #t
-                            [(country2 year2 continent2 pop2)
-                             (in-data-frame gapminder
-                                            "country"
-                                            "year"
-                                            "continent"
-                                            "pop")]
-                            #:when (and (equal? continent1 continent2)
-                                        (> pop1 pop2)
-                                        (equal? year1 year2)))
-                (list country1 country2 year1))])
-  l)
+(when #t
+  (set! ITER-CT 10)
 
-(df-add-index! gapminder "yearInd" "year" <)
+  (time*
+   (for/list ([l (do/sequence ([(country1 year1 continent1 pop1)
+                                (in-data-frame gapminder
+                                               "country"
+                                               "year"
+                                               "continent"
+                                               "pop")]
+                               #:when #t
+                               [(country2 year2 continent2 pop2)
+                                (in-data-frame gapminder
+                                               "country"
+                                               "year"
+                                               "continent"
+                                               "pop")]
+                               #:when (and (equal? continent1 continent2)
+                                           (> pop1 pop2)
+                                           (equal? year1 year2)))
+                   (list country1 country2 year1))])
+     l))
 
-#;(for/list ([l (do/sequence ([(country1 year1 continent1 pop1)
-                             (in-data-frame/by-index gapminder
-                                                     #:index "yearInd"
-                                                     "country"
-                                                     "year"
-                                                     "continent"
-                                                     "pop")]
-                            #:when #t
-                            [(country2 year2 continent2 pop2)
-                             (in-data-frame/by-index gapminder
-                                                     #:index "yearInd"
-                                                     #:from year1
-                                                     #:to   year1
-                                                     "country"
-                                                     "year"
-                                                     "continent"
-                                                     "pop")]
-                            #:when (and (equal? continent1 continent2)
-                                        (> pop1 pop2)))
-                (list country1 country2 year1))])
-  l)
+  (df-add-index! gapminder "yearInd" "year" <)
 
-#;(for/list ([l (do/sequence ([(country1 year1 continent1 pop1)
-                             (in-data-frame/by-index/syntax gapminder
-                                                            #:index "yearInd"
-                                                            "country"
-                                                            "year"
-                                                            "continent"
-                                                            "pop")]
-                            #:when #t
-                            [(country2 year2 continent2 pop2)
-                             (in-data-frame/by-index/syntax gapminder
-                                                            #:index "yearInd"
-                                                            #:from year1
-                                                            #:to   year1
-                                                            "country"
-                                                            "year"
-                                                            "continent"
-                                                            "pop")]
-                            #:when (and (equal? continent1 continent2)
-                                        (> pop1 pop2)))
-                (list country1 country2 year1))])
-  l)
+  (time*
+   (for/list ([l (do/sequence ([(country1 year1 continent1 pop1)
+                                (in-data-frame/by-index gapminder
+                                                        #:index "yearInd"
+                                                        "country"
+                                                        "year"
+                                                        "continent"
+                                                        "pop")]
+                               #:when #t
+                               [(country2 year2 continent2 pop2)
+                                (in-data-frame/by-index gapminder
+                                                        #:index "yearInd"
+                                                        #:from year1
+                                                        #:to   year1
+                                                        "country"
+                                                        "year"
+                                                        "continent"
+                                                        "pop")]
+                               #:when (and (equal? continent1 continent2)
+                                           (> pop1 pop2)))
+                   (list country1 country2 year1))])
+     l))
 
-(df-add-index*! gapminder "yearContinentInd" (list "year" "continent") (list < string<?))
+  (time*
+   (for/list ([l (do/sequence ([(country1 year1 continent1 pop1)
+                                (in-data-frame/by-index/syntax gapminder
+                                                               #:index "yearInd"
+                                                               "country"
+                                                               "year"
+                                                               "continent"
+                                                               "pop")]
+                               #:when #t
+                               [(country2 year2 continent2 pop2)
+                                (in-data-frame/by-index/syntax gapminder
+                                                               #:index "yearInd"
+                                                               #:from year1
+                                                               #:to   year1
+                                                               "country"
+                                                               "year"
+                                                               "continent"
+                                                               "pop")]
+                               #:when (and (equal? continent1 continent2)
+                                           (> pop1 pop2)))
+                   (list country1 country2 year1))])
+     l))
 
-#;(for/list ([l (do/sequence ([(country1 year1 continent1 pop1)
-                             (in-data-frame/by-index* gapminder
-                                                      #:index "yearContinentInd"
-                                                      "country"
-                                                      "year"
-                                                      "continent"
-                                                      "pop")]
-                            #:when #t
-                            [(country2 year2 continent2 pop2)
-                             (in-data-frame/by-index* gapminder
-                                                      #:index "yearContinentInd"
-                                                      #:from (list year1 continent1)
-                                                      #:to   (list year1 continent1)
-                                                      "country"
-                                                      "year"
-                                                      "continent"
-                                                      "pop")]
-                            #:when (and (equal? continent1 continent2)
-                                        (> pop1 pop2)))
-                (list country1 country2 year1))])
-  l)
+  (time*
+   (for/list ([l (do/sequence ([(country1 year1 continent1 pop1)
+                                (in-data-frame/by-index1/syntax gapminder
+                                                                #:index "yearInd"
+                                                                "country"
+                                                                "year"
+                                                                "continent"
+                                                                "pop")]
+                               #:when #t
+                               [(country2 year2 continent2 pop2)
+                                (in-data-frame/by-index1/syntax gapminder
+                                                                #:index "yearInd"
+                                                                #:from year1
+                                                                #:to   year1
+                                                                "country"
+                                                                "year"
+                                                                "continent"
+                                                                "pop")]
+                               #:when (and (equal? continent1 continent2)
+                                           (> pop1 pop2)))
+                   (list country1 country2 year1))])
+     l))
 
-(for/list ([l (do/sequence ([(country1 year1 continent1 pop1)
-                             (in-data-frame/by-index*/syntax gapminder
-                                                      #:index "yearContinentInd"
-                                                      "country"
-                                                      "year"
-                                                      "continent"
-                                                      "pop")]
-                            #:when #t
-                            [(country2 year2 continent2 pop2)
-                             (in-data-frame/by-index*/syntax gapminder
-                                                      #:index "yearContinentInd"
-                                                      #:from (list year1 continent1)
-                                                      #:to   (list year1 continent1)
-                                                      "country"
-                                                      "year"
-                                                      "continent"
-                                                      "pop")]
-                            #:when (and (equal? continent1 continent2)
-                                        (> pop1 pop2)))
-                (list country1 country2 year1))])
-  l)
+  (time*
+   (for/list ([l (do/sequence ([(country1 year1 continent1 pop1)
+                                (in-data-frame/by-index2/syntax gapminder
+                                                                #:index "yearInd"
+                                                                "country"
+                                                                "year"
+                                                                "continent"
+                                                                "pop")]
+                               #:when #t
+                               [(country2 year2 continent2 pop2)
+                                (in-data-frame/by-index2/syntax gapminder
+                                                                #:index "yearInd"
+                                                                #:from year1
+                                                                #:to   year1
+                                                                "country"
+                                                                "year"
+                                                                "continent"
+                                                                "pop")]
+                               #:when (and (equal? continent1 continent2)
+                                           (> pop1 pop2)))
+                   (list country1 country2 year1))])
+     l))
+
+  (df-add-index*! gapminder "yearContinentInd" (list "year" "continent") (list < string<?))
+
+  (time*
+   (for/list ([l (do/sequence ([(country1 year1 continent1 pop1)
+                                (in-data-frame/by-index* gapminder
+                                                         #:index "yearContinentInd"
+                                                         "country"
+                                                         "year"
+                                                         "continent"
+                                                         "pop")]
+                               #:when #t
+                               [(country2 year2 continent2 pop2)
+                                (in-data-frame/by-index* gapminder
+                                                         #:index "yearContinentInd"
+                                                         #:from (list year1 continent1)
+                                                         #:to   (list year1 continent1)
+                                                         "country"
+                                                         "year"
+                                                         "continent"
+                                                         "pop")]
+                               #:when (and (equal? continent1 continent2)
+                                           (> pop1 pop2)))
+                   (list country1 country2 year1))])
+     l))
+
+  (time*
+   (for/list ([l (do/sequence ([(country1 year1 continent1 pop1)
+                                (in-data-frame/by-index*/syntax gapminder
+                                                                #:index "yearContinentInd"
+                                                                "country"
+                                                                "year"
+                                                                "continent"
+                                                                "pop")]
+                               #:when #t
+                               [(country2 year2 continent2 pop2)
+                                (in-data-frame/by-index*/syntax gapminder
+                                                                #:index "yearContinentInd"
+                                                                #:from (list year1 continent1)
+                                                                #:to   (list year1 continent1)
+                                                                "country"
+                                                                "year"
+                                                                "continent"
+                                                                "pop")]
+                               #:when (and (equal? continent1 continent2)
+                                           (> pop1 pop2)))
+                   (list country1 country2 year1))])
+     l)))
 
 ;; ----------------------
 #;(for ([v (in-list (grouped-data-frame-group-indices (group-with gapminder "continent")))]
