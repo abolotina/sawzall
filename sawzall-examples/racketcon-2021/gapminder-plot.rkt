@@ -280,6 +280,29 @@
                                #:when (and (equal? continent1 continent2)
                                            (> pop1 pop2)))
                    (list country1 country2 year1))])
+     l))
+
+  (time*
+   (for/list ([l (do/sequence ([(country1 year1 continent1 pop1)
+                                (in-data-frame/by-index*1/syntax gapminder
+                                                                 #:index "yearContinentInd"
+                                                                 "country"
+                                                                 "year"
+                                                                 "continent"
+                                                                 "pop")]
+                               #:when #t
+                               [(country2 year2 continent2 pop2)
+                                (in-data-frame/by-index*1/syntax gapminder
+                                                                 #:index "yearContinentInd"
+                                                                 #:from (list year1 continent1)
+                                                                 #:to   (list year1 continent1)
+                                                                 "country"
+                                                                 "year"
+                                                                 "continent"
+                                                                 "pop")]
+                               #:when (and (equal? continent1 continent2)
+                                           (> pop1 pop2)))
+                   (list country1 country2 year1))])
      l)))
 
 ;; ----------------------
